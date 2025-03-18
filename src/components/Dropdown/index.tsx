@@ -22,7 +22,6 @@ import {
   Keyboard,
   KeyboardEvent,
   Modal,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableHighlight,
