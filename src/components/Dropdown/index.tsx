@@ -165,7 +165,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
       if (!disable) {
         _measure();
         setVisible(true);
-        
+
         if (onFocus) {
           onFocus();
         }
@@ -538,8 +538,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
               {renderItem ? (
                 renderItem(item, selected)
               ) : (
-                <View
-                  style={styles.item}>
+                <View style={styles.item}>
                   <Text
                     style={StyleSheet.flatten([
                       styles.textItem,
@@ -630,8 +629,10 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
           return (
             <FlatList
               testID={testID + ' flatlist'}
-              onLayout={layout => {
-                (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) && setModalHeight(layout.nativeEvent.layout.height);
+              onLayout={(layout) => {
+                (modalHeight === 'auto' ||
+                  (typeof modalHeight === 'number' && modalHeight < 10)) &&
+                  setModalHeight(layout.nativeEvent.layout.height);
               }}
               accessibilityLabel={accessibilityLabel + ' flatlist'}
               {...flatListProps}
@@ -729,9 +730,9 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
                       !isTopPosition
                         ? { paddingTop: extendHeight }
                         : {
-                          justifyContent: 'flex-end',
-                          paddingBottom: extendHeight,
-                        },
+                            justifyContent: 'flex-end',
+                            paddingBottom: extendHeight,
+                          },
                       isFull && styles.fullScreen,
                     ])}
                   >
@@ -741,11 +742,21 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
                         isFull ? styleHorizontal : styleVertical,
                         {
                           width,
-                          opacity: (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) ? 0 : 1,
-                          height: (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) ? 'auto' : modalAnimatedHeight.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, modalHeight as number],
-                          }),
+                          opacity:
+                            modalHeight === 'auto' ||
+                            (typeof modalHeight === 'number' &&
+                              modalHeight < 10)
+                              ? 0
+                              : 1,
+                          height:
+                            modalHeight === 'auto' ||
+                            (typeof modalHeight === 'number' &&
+                              modalHeight < 10)
+                              ? 'auto'
+                              : modalAnimatedHeight.interpolate({
+                                  inputRange: [0, 1],
+                                  outputRange: [0, modalHeight as number],
+                                }),
                         },
                         containerStyle,
                       ])}
