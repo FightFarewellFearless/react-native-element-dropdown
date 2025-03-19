@@ -382,7 +382,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
           useNativeDriver: false,
         }).start();
       }
-    }, [visible, modalHeight]);
+    }, [visible, modalHeight, modalAnimatedHeight, animationDuration]);
 
     const onSearch = useCallback(
       (text: string) => {
@@ -660,15 +660,16 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
         );
       },
       [
-        _renderItem,
-        accessibilityLabel,
-        flatListProps,
-        listData,
         inverted,
         renderSearch,
-        scrollIndex,
-        showsVerticalScrollIndicator,
         testID,
+        accessibilityLabel,
+        flatListProps,
+        scrollIndex,
+        listData,
+        _renderItem,
+        showsVerticalScrollIndicator,
+        modalHeight,
       ]
     );
 
@@ -774,10 +775,9 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
       return null;
     }, [
       visible,
-      search,
       position,
       keyboardHeight,
-      modalAnimatedHeight,
+      search,
       maxHeight,
       minHeight,
       dropdownPosition,
@@ -785,8 +785,10 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
       showOrClose,
       styleContainerVertical,
       backgroundColor,
-      containerStyle,
       styleHorizontal,
+      modalHeight,
+      modalAnimatedHeight,
+      containerStyle,
       _renderList,
     ]);
 
