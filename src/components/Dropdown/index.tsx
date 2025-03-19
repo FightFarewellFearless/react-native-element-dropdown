@@ -631,7 +631,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
             <FlatList
               testID={testID + ' flatlist'}
               onLayout={layout => {
-                modalHeight === 'auto' && setModalHeight(layout.nativeEvent.layout.height);
+                (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) && setModalHeight(layout.nativeEvent.layout.height);
               }}
               accessibilityLabel={accessibilityLabel + ' flatlist'}
               {...flatListProps}
@@ -741,8 +741,8 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
                         isFull ? styleHorizontal : styleVertical,
                         {
                           width,
-                          opacity: modalHeight === 'auto' ? 0 : 1,
-                          height: modalHeight === 'auto' ? 'auto' : modalAnimatedHeight.interpolate({
+                          opacity: (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) ? 0 : 1,
+                          height: (modalHeight === 'auto' || (typeof modalHeight === 'number' && modalHeight < 10)) ? 'auto' : modalAnimatedHeight.interpolate({
                             inputRange: [0, 1],
                             outputRange: [0, modalHeight as number],
                           }),
