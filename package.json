@@ -170,5 +170,6 @@
       ]
     ]
   },
-  "packageManager": "yarn@3.8.2"
+  "packageManager": "yarn@3.8.2",
+  "private": false
 }
