@@ -105,6 +105,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
     const [currentValue, setCurrentValue] = useState<any>(null);
     const [listData, setListData] = useState<any[]>(data);
     const [position, setPosition] = useState<any>();
+    const [modalHeight, setModalHeight] = useState<string | number>('auto');
     const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
     const [searchText, setSearchText] = useState('');
     const [modalAnimatedHeight] = useState(new Animated.Value(0));
@@ -164,11 +165,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
       if (!disable) {
         _measure();
         setVisible(true);
-        Animated.timing(modalAnimatedHeight, {
-          toValue: 1,
-          duration: animationDuration,
-          useNativeDriver: false,
-        }).start();
+        
         if (onFocus) {
           onFocus();
         }
@@ -343,11 +340,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
 
         if (visibleStatus) {
           setVisible(true);
-          Animated.timing(modalAnimatedHeight, {
-            toValue: 1,
-            duration: animationDuration,
-            useNativeDriver: false,
-          }).start();
+
           if (onFocus) {
             onFocus();
           }
@@ -380,6 +373,16 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
       onFocus,
       onBlur,
     ]);
+
+    useEffect(() => {
+      if (visible && modalHeight !== 'auto') {
+        Animated.timing(modalAnimatedHeight, {
+          toValue: 1,
+          duration: animationDuration,
+          useNativeDriver: false,
+        }).start();
+      }
+    }, [visible, modalHeight]);
 
     const onSearch = useCallback(
       (text: string) => {
@@ -535,7 +538,8 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
               {renderItem ? (
                 renderItem(item, selected)
               ) : (
-                <View style={styles.item}>
+                <View
+                  style={styles.item}>
                   <Text
                     style={StyleSheet.flatten([
                       styles.textItem,
@@ -626,6 +630,9 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
           return (
             <FlatList
               testID={testID + ' flatlist'}
+              onLayout={layout => {
+                modalHeight === 'auto' && setModalHeight(layout.nativeEvent.layout.height);
+              }}
               accessibilityLabel={accessibilityLabel + ' flatlist'}
               {...flatListProps}
               keyboardShouldPersistTaps="handled"
@@ -722,9 +729,9 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
                       !isTopPosition
                         ? { paddingTop: extendHeight }
                         : {
-                            justifyContent: 'flex-end',
-                            paddingBottom: extendHeight,
-                          },
+                          justifyContent: 'flex-end',
+                          paddingBottom: extendHeight,
+                        },
                       isFull && styles.fullScreen,
                     ])}
                   >
@@ -734,9 +741,10 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
                         isFull ? styleHorizontal : styleVertical,
                         {
                           width,
-                          height: modalAnimatedHeight.interpolate({
+                          opacity: modalHeight === 'auto' ? 0 : 1,
+                          height: modalHeight === 'auto' ? 'auto' : modalAnimatedHeight.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [0, maxHeight],
+                            outputRange: [0, modalHeight as number],
                           }),
                         },
                         containerStyle,
