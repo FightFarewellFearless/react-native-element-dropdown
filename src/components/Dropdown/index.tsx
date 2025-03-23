@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -106,6 +107,9 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
     const [listData, setListData] = useState<any[]>(data);
     const [position, setPosition] = useState<any>();
     const [modalHeight, setModalHeight] = useState<string | number>('auto');
+    useLayoutEffect(() => {
+      setModalHeight('auto');
+    }, [listData]);
     const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
     const [searchText, setSearchText] = useState('');
     const [modalAnimatedHeight] = useState(new Animated.Value(0));
